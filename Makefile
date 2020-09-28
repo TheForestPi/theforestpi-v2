@@ -19,6 +19,6 @@ all:
 	pm2 start /home/pi/theforestpi-v2/tfp-v2.js && pm2 save
 
 	### finalize
-	@echo "edit config.json and reboot =>"
+	@echo "edit config.json and restart service =>"
 	@echo "1) nano /home/pi/theforestpi-v2/config.json"
 	@echo "2) pm2 restart tfp-v2"

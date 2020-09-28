@@ -1,0 +1,25 @@
+{
+	"enabled": true,
+	"list": [{
+			"command": "play",
+			"option": "jazz.m3u",
+			"from": "8:00",
+			"to": "16:00",
+			"invert": false
+		},
+		{
+			"command": "play",
+			"option": "SmoothJazzFlorida.m3u",
+			"from": "16:01",
+			"to": "17:00",
+			"invert": false
+		},
+		{
+			"command": "stop",
+			"option": "",
+			"from": "8:00",
+			"to": "17:00",
+			"invert": true
+		}
+	]
+}

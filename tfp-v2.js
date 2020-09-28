@@ -23,6 +23,7 @@ const PLAYLIST_DIR = __dirname + '/' + DROPBOX_DIR + '/playlist';
 const PLAYING_LOG_FILENAME = __dirname + '/' + DROPBOX_DIR + '/playing.log';
 const DBX_PLAYING_LOG_PATH = '/playing.log';
 const DBX_PLAYING_LOG_MAX_LINE_COUNT = 1000;
+const SCHEDULE_CHECK_IN_MS = (10 * 1000);
 
 var temp_playlist_fn = '/tmp/tfp.m3u';
 var mpg123_player = null;
@@ -129,7 +130,7 @@ schedule_timer = setInterval(function() {
 		.catch((err) => {
 			Log.e(err);
 		})
-}, 1000);
+}, SCHEDULE_CHECK_IN_MS);
 
 function filesListFolder(params) {
 	return new Promise((resolve, reject) => {

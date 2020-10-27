@@ -41,10 +41,8 @@ pm2 restart tfp-v2
 ```
 
 ### สรุปการใช้งาน
-1) ใช้ Dropbox Account เดียว โดยสร้าง Access Token แบบถาวร (No expiration) แล้วเอา Access Token ที่ได้มากรอกในไฟล์ config.json สร้างจากเว็บ =>
-```
-https://www.dropbox.com/developers/apps
-```
+1) ใช้ Dropbox Account เดียว โดยสร้าง Access Token แบบถาวร (No expiration) แล้วเอา Access Token ที่ได้มากรอกในไฟล์ config.json [คลิ๊กลิงค์นี้เพื่อสร้าง Access Token](https://www.dropbox.com/developers/apps)
+
 2) Upload เพลงไปใส่เอาไว้ใน Dropbox เก็บไว้ที่โฟลเดอร์ songs
 3) สร้างไฟล์ playlist เก็บไว้ใน Dropbox เก็บไว้ที่โฟลเดอร์ playlist
 4) แก้ไขตารางเปิดเพลงใน Dropbox ไฟล์ config/schedule.json

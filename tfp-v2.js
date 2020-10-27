@@ -45,6 +45,7 @@ const SCHEDULE_CHECK_IN_MS = (5 * 1000);
 var temp_playlist_fn = '/tmp/tfp.m3u';
 var mpg123_player = null;
 var check_timer = null;
+var schedule_downloading_flag = false;
 
 const dropboxV2Api = require('dropbox-v2-api');
 const dropbox = dropboxV2Api.authenticate({
@@ -80,6 +81,12 @@ function readFilePromise(filename) {
 
 // schedule timer
 schedule_timer = setInterval(function() {
+	// ignore schedule if schedule.json is downloading
+	if (schedule_downloading_flag) {
+		Log.i('abort schedule due to schedule.json is downloading')
+		return;
+	}
+
 	var schedule_fn = CONFIG_DIR + '/schedule.json';
 	if (!fs.existsSync(schedule_fn)) {
 		return;
@@ -165,9 +172,23 @@ function filesListFolder(params) {
 }
 
 function filesDownload(params) {
+	var sch_dl_flag = (params.path == '/config/schedule.json');
+
 	return new Promise((resolve, reject) => {
+		// check schedule downloading flag
+		if (sch_dl_flag) {
+			Log.i('set schedule downloading flag');
+			schedule_downloading_flag = true;
+		}
+
 		const fi = fs.createWriteStream(APP_DIR + params.path);
 		fi.on('finish', () => {
+			// check schedule downloading flag
+			if (sch_dl_flag) {
+				Log.i('clear schedule downloading flag');
+				schedule_downloading_flag = false;
+			}
+
 			fi.close(resolve);
 		});
 
@@ -280,6 +301,9 @@ setInterval(function() {
 						.catch((err) => {
 							Log.e(JSON.stringify(err));
 						});
+
+
+
 				}
 			}
 

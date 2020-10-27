@@ -97,8 +97,15 @@ schedule_timer = setInterval(function() {
 			var schedule = JSON.parse(content);
 			if (schedule.enabled) {
 				var curr_tm = new Date();
-				for (var i in schedule.list) {
-					var item = schedule.list[i];
+
+				var list = schedule.list;
+				// check if schedule section for current mac address exists
+				if (mac_str in schedule) {
+					list = schedule[mac_str];
+				}
+
+				for (var i in list) {
+					var item = list[i];
 					var from_tm = new Date(curr_tm);
 					var to_tm = new Date(curr_tm);
 					try {

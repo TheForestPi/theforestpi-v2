@@ -14,14 +14,31 @@ Log.log_flag |= Log.error;
 Log.log_flag |= Log.debug;
 var Config = require('./config.json');
 
+var macaddress = require('macaddress').networkInterfaces();
+var mac_str = '';
+var PLAYING_LOG_FILENAME_WITH_MAC = 'playing.log';
+for (const key in macaddress) {
+	var interfaces = macaddress[key];
+	for (const intf_key in interfaces) {
+		if (`${intf_key}` == 'mac') {
+			mac_str = interfaces.mac.replace(/:/g, '-');
+		}
+    }
+	if (mac_str != '') {
+		PLAYING_LOG_FILENAME_WITH_MAC = mac_str + '_playing.log';
+		break;
+	}
+}
+Log.i('machine mac address ' + mac_str);
+
 const SYNC_ALL_IN_MS = (30 * 1000);
 const DROPBOX_DIR = 'dropbox';
 const APP_DIR = __dirname + '/' + DROPBOX_DIR;
 const CONFIG_DIR = __dirname + '/' + DROPBOX_DIR + '/config';
 const SONGS_DIR = __dirname + '/' + DROPBOX_DIR + '/songs';
 const PLAYLIST_DIR = __dirname + '/' + DROPBOX_DIR + '/playlist';
-const PLAYING_LOG_FILENAME = __dirname + '/' + DROPBOX_DIR + '/playing.log';
-const DBX_PLAYING_LOG_PATH = '/playing.log';
+const PLAYING_LOG_FILENAME = __dirname + '/' + DROPBOX_DIR + '/' + PLAYING_LOG_FILENAME_WITH_MAC;
+const DBX_PLAYING_LOG_PATH = '/' + PLAYING_LOG_FILENAME_WITH_MAC;
 const DBX_PLAYING_LOG_MAX_LINE_COUNT = 1000;
 const SCHEDULE_CHECK_IN_MS = (5 * 1000);
 
@@ -235,7 +252,7 @@ setInterval(function() {
 						});
 					})
 					.catch((err) => {
-						Log.e(err);
+						Log.e(JSON.stringify(err));
 						error = true;
 					});
 			}
@@ -261,7 +278,7 @@ setInterval(function() {
 							fs.utimesSync(fn, ts, ts);
 						})
 						.catch((err) => {
-							Log.e(err);
+							Log.e(JSON.stringify(err));
 						});
 				}
 			}
@@ -308,7 +325,7 @@ function playing_log(line) {
 		//
 	})
 	.catch((err) => {
-		Log.e(err);
+		Log.e(JSON.stringify(err));
 	});
 }
 
